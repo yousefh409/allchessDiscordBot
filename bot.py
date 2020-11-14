@@ -31,7 +31,7 @@ async def game(message):
         response = contents[2] + " , Do you accept the challenge <@" + str(message.author.id) + "> has made (Y/N)"
         await message.channel.send(response)
         responderId = contents[2][3:-1]
-        awaiting[responderId] = lambda retMessage: getGameLink(retMessage)
+        awaiting[responderId] = lambda retMessage: get_game_link(retMessage)
 
 
 async def ranking(message):
@@ -41,28 +41,50 @@ async def ranking(message):
         await message.channel.send(response)
     else:
         username = contents[2]
-        lichess_response = requests.get(url= LICHESS_ENDPOINT + '/api/user/' + username +  '/rating-history')
-        if lichess_response.status_code == 200:
-            data = [x for x in lichess_response.json() if x["points"] != []]
+        success, lichess_response = make_request(f"/api/user/{username}/rating-history")
+        if success:
+            data = [x for x in lichess_response if x["points"] != []]
             response = "Here are " + username + "'s stats, **organized in [year, month, day, rating], with month starting at 0(January)**: ```" + str(json.dumps(data, indent=4, sort_keys=True)) + "```"
         else:
             response = "sorry, we encountered an error with either lichess, or the username you inputted :("
         await message.channel.send(response)
 
 
+async def tournament(message):
+    contents = message.content.split()
+    if len(contents) <= 2:
+
+        make_request("api/tournament/new");
+
+        response = "uhmmm"
+        await message.channel.send(response)
+
+
+def make_request(endpoint, func=requests.get):
+
+    api_url =  LICHESS_ENDPOINT + endpoint;
+    lichess_response = func(url=api_url)
+
+    if lichess_response.status_code == 200:
+        return True, lichess_response.json()
+
+    return False, None
+
+
 commands = {
     'game' : game,
-    'ranking': ranking
+    'ranking': ranking,
+    'tournament': tournament
 }
 
 
-async def getGameLink(message):
+async def get_game_link(message):
     result = message.content.lower()
     confirmations = ['y', 'yes', 'sure', 'yup', 'yea', 'yessir']
     if result in confirmations:
-        lichess_response = requests.post(url = LICHESS_ENDPOINT + "/api/challenge/open")
-        if lichess_response.status_code == 200:
-            game_link = lichess_response.json()["challenge"]["url"]
+        success, lichess_response = make_request("/api/challenge/open", requests.post)
+        if success:
+            game_link = lichess_response["challenge"]["url"]
             response = "**n i c e**, here is a game link for your game. go **dominate** \n" + game_link
         else:
             response = "we encountered an error with lichess :("

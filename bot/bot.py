@@ -88,7 +88,7 @@ async def about(message):
     em.add_field(name="Help Command", value="help", inline=True)
     em.add_field(name="Version", value="1.0.0", inline=True)
     em.add_field(name="Repository", value="https://github.com/yousefh409/allchessDiscordBot", inline=False)
-
+    em.add_field(name="Invite", value="https://top.gg/bot/777276681517531187/invite/", inline=False)
     await message.channel.send(embed=em)
 
 

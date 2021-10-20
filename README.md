@@ -26,4 +26,4 @@ This bot can be brought into a discord server, and instantly make practicing and
 # Helps or Questions
 Please feel free to make a pull request, and maintainers will take a look at it swiftly. Please contact us if you have any questions!
 
-    * Use `!chess help` to view some commands.
+* Use `!chess help` to view some commands.

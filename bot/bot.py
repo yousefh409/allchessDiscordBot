@@ -13,8 +13,11 @@ import statcord
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 STATCORD_ID = os.getenv('STATCORD_ID')
+ADMIN_ID = os.getenv('ADMIN_ID')
 
-client = discord.Client()
+intents = discord.Intents.default()
+# intents.members = True
+client = discord.Client(intents=intents)
 
 @client.event
 async def on_ready():
@@ -192,9 +195,13 @@ async def train(message):
     await message.channel.send(embed=em)
 
 async def num_serv(message):
+    # response = "Unfortunatley, this command is not yet functioning due to discord policy updates. We will get it up and running as soon as possible!"
     num_memb = 0
     for serv in client.guilds:
+        # if str(message.author.id) == ADMIN_ID:
+        #     print(serv.name + ": ", serv.member_count)
         num_memb += serv.member_count
+
     response = "I am in **" +  str(len(client.guilds))  + "** servers at the moment!\n"
     response += "This comes to a total of **" + str(num_memb) + "** people using All Chess!"
 
@@ -326,9 +333,10 @@ async def on_message(message):
         await message.channel.send(response)
 
 
-def setup(bot):
-    bot.run(TOKEN)
-    bot.add_cog(StatcordPost(client))
-    bot.change_presence(activity=discord.Game(name="!chess help"))
+# def setup(bot):
+#     bot.run(TOKEN)
+#     # bot.add_cog(StatcordPost(client))
+#     bot.change_presence(activity=discord.Game(name="!chess help"))
 
-setup(client)
+# setup(client)
+client.run(TOKEN)

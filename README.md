@@ -21,7 +21,7 @@ This bot can be brought into a discord server, and instantly make practicing and
 2. Run `pip install -r requirements.txt` in the initial directory to install all required packages
 3. Run `python bot.py` inside the `bots` folder to start the bot
 
-    - We are working on the ability to simply invite the bot
+    - To invite the bot to your discord server, go here: https://top.gg/bot/777276681517531187/invite/
 
 # Helps or Questions
 Please feel free to make a pull request, and maintainers will take a look at it swiftly. Please contact us if you have any questions!
